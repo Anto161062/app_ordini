@@ -1,30 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const app = document.getElementById('app');
-    const customerForm = document.getElementById('customerForm');
-
-    // Gestione del form per i dati del cliente
-    customerForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita il ricaricamento della pagina
-
-        const nome = document.getElementById('nome').value;
-        const cognome = document.getElementById('cognome').value;
-        const telefono = document.getElementById('telefono').value;
-        const email = document.getElementById('email').value;
-
-        // Mostra i dati del cliente
-        app.insertAdjacentHTML('beforebegin', `
-            <div id="datiCliente">
-                <h3>Dati Cliente</h3>
-                <p>Nome: ${nome}</p>
-                <p>Cognome: ${cognome}</p>
-                <p>Telefono: ${telefono}</p>
-                <p>Email: ${email}</p>
-            </div>
-        `);
-
-        // Nascondi il form dopo aver inviato i dati
-        customerForm.style.display = 'none';
-    });
+    const appBucato = document.getElementById('appBucato');
 
     // Lista delle essenze con formati e prezzi
     const essenze = [
@@ -37,40 +13,53 @@ document.addEventListener('DOMContentLoaded', function() {
         { nome: "VaniLime", formati: [ {ml: "200ml", prezzo: 20}, {ml: "500ml", prezzo: 35}, {ml: "1000ml", prezzo: 60} ], immagine: 'immagini/vanilime.png' }
     ];
 
-    // Creazione della lista di essenze
-    const essenzeDiv = document.createElement('div');
-    essenze.forEach((essenza, essenzaIndex) => {
-        const essenzaDiv = document.createElement('div');
-        essenzaDiv.classList.add('essenza-item');
+    // Lista dei profumatori per bucato con formati e prezzi
+    const bucato = [
+        { nome: "03 Fiori", formati: [ {ml: "250ml", prezzo: 12}, {ml: "500ml", prezzo: 20} ], immagine: 'immagini/03_fiori.png' },
+        { nome: "10 Respiro", formati: [ {ml: "250ml", prezzo: 12}, {ml: "500ml", prezzo: 20} ], immagine: 'immagini/10_respiro.png' },
+        { nome: "04 Tramonto", formati: [ {ml: "250ml", prezzo: 12}, {ml: "500ml", prezzo: 20} ], immagine: 'immagini/04_tramonto.png' }
+    ];
 
-        // Colonna sinistra: immagine e nome della profumazione
-        const leftDiv = document.createElement('div');
-        leftDiv.classList.add('left-column');
-        leftDiv.innerHTML = `<img src="${essenza.immagine}" alt="${essenza.nome}">
-                             <h3>${essenza.nome}</h3>`;
+    // Funzione per creare la lista di essenze o profumatori
+    function creaListaProdotti(prodotti, targetElement) {
+        const prodottiDiv = document.createElement('div');
+        prodotti.forEach((prodotto, prodottoIndex) => {
+            const prodottoDiv = document.createElement('div');
+            prodottoDiv.classList.add('essenza-item');
 
-        // Colonna destra: formati e prezzi
-        const rightDiv = document.createElement('div');
-        rightDiv.classList.add('right-column');
+            // Colonna sinistra: immagine e nome del prodotto
+            const leftDiv = document.createElement('div');
+            leftDiv.classList.add('left-column');
+            leftDiv.innerHTML = `<img src="${prodotto.immagine}" alt="${prodotto.nome}">
+                                 <h3>${prodotto.nome}</h3>`;
 
-        essenza.formati.forEach((formato, formatoIndex) => {
-            const formatoDiv = document.createElement('div');
-            formatoDiv.classList.add('formato-item');
-            formatoDiv.innerHTML = `
-                <p>${formato.ml} -                <p>${formato.ml} - €${formato.prezzo}</p>
-                <input type="number" id="quantita-${essenzaIndex}-${formatoIndex}" min="0" placeholder="Quantità">
-            `;
-            rightDiv.appendChild(formatoDiv);
+            // Colonna destra: formati e prezzi
+            const rightDiv = document.createElement('div');
+            rightDiv.classList.add('right-column');
+
+            prodotto.formati.forEach((formato, formatoIndex) => {
+                const formatoDiv = document.createElement('div');
+                formatoDiv.classList.add('formato-item');
+                formatoDiv.innerHTML = `
+                    <p>${formato.ml} - €${formato.prezzo}</p>
+                    <input type="number" id="quantita-${prodottoIndex}-${formatoIndex}" min="0" placeholder="Quantità">
+                `;
+                rightDiv.appendChild(formatoDiv);
+            });
+
+            prodottoDiv.appendChild(leftDiv);
+            prodottoDiv.appendChild(rightDiv);
+            prodottiDiv.appendChild(prodottoDiv);
         });
 
-        essenzaDiv.appendChild(leftDiv);
-        essenzaDiv.appendChild(rightDiv);
-        essenzeDiv.appendChild(essenzaDiv);
-    });
+        targetElement.appendChild(prodottiDiv);
+    }
 
-    app.appendChild(essenzeDiv);
+    // Creazione delle liste
+    creaListaProdotti(essenze, app);
+    creaListaProdotti(bucato, appBucato);
 
-    // Bottone per calcolare il totale
+    // Bottone per calcolare il totale (valido per entrambe le liste)
     const buttonDiv = document.createElement('div');
     buttonDiv.innerHTML = `
         <button id="calcolaTotale" class="btn">Calcola Totale</button>
@@ -82,9 +71,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('calcolaTotale').addEventListener('click', function() {
         let totaleGlobale = 0;
 
-        essenze.forEach((essenza, essenzaIndex) => {
-            essenza.formati.forEach((formato, formatoIndex) => {
-                const quantita = parseInt(document.getElementById(`quantita-${essenzaIndex}-${formatoIndex}`).value);
+        [...essenze, ...bucato].forEach((prodotto, prodottoIndex) => {
+            prodotto.formati.forEach((formato, formatoIndex) => {
+                const quantita = parseInt(document.getElementById(`quantita-${prodottoIndex}-${formatoIndex}`).value);
                 if (quantita > 0) {
                     totaleGlobale += formato.prezzo * quantita;
                 }
@@ -94,5 +83,4 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('totaleGlobale').textContent = `Totale Globale: €${totaleGlobale}`;
     });
 });
-
 

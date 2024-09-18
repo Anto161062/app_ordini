@@ -1,30 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const app = document.getElementById('app');
-    const customerForm = document.getElementById('customerForm');
-
-    // Gestione del form per i dati del cliente
-    customerForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita il ricaricamento della pagina
-
-        const nome = document.getElementById('nome').value;
-        const cognome = document.getElementById('cognome').value;
-        const telefono = document.getElementById('telefono').value;
-        const email = document.getElementById('email').value;
-
-        // Mostra i dati del cliente
-        app.insertAdjacentHTML('beforebegin', `
-            <div id="datiCliente">
-                <h3>Dati Cliente</h3>
-                <p>Nome: ${nome}</p>
-                <p>Cognome: ${cognome}</p>
-                <p>Telefono: ${telefono}</p>
-                <p>Email: ${email}</p>
-            </div>
-        `);
-
-        // Nascondi il form dopo aver inviato i dati
-        customerForm.style.display = 'none';
-    });
 
     // Lista delle essenze con formati e prezzi
     const essenze = [
@@ -34,7 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
         { nome: "Oltremare", formati: [ {ml: "200ml", prezzo: 20}, {ml: "500ml", prezzo: 35}, {ml: "1000ml", prezzo: 60} ], immagine: 'immagini/oltremare.png' },
         { nome: "Risveglio", formati: [ {ml: "200ml", prezzo: 20}, {ml: "500ml", prezzo: 35}, {ml: "1000ml", prezzo: 60} ], immagine: 'immagini/risveglio.png' },
         { nome: "Sapientia", formati: [ {ml: "200ml", prezzo: 20}, {ml: "500ml", prezzo: 35}, {ml: "1000ml", prezzo: 60} ], immagine: 'immagini/sapientia.png' },
-        { nome: "VaniLime", formati: [ {ml: "200ml", prezzo: 20}, {ml: "500ml", prezzo: 35}, {ml: "1000ml", prezzo: 60} ], immagine: 'immagini/vanilime.png' }
+        { nome: "VaniLime", formati: [ {ml: "200ml", prezzo: 20}, {ml: "500ml", prezzo: 35}, {ml: "1000ml", prezzo: 60} ], immagine: 'immagini/vanilime.png' },
+        
+        // Aggiunta delle profumazioni per la biancheria
+        { nome: "03 Fiori", formati: [ {ml: "250ml", prezzo: 12}, {ml: "500ml", prezzo: 18} ], immagine: 'immagini/03_fiori.png' },
+        { nome: "10 Respiro", formati: [ {ml: "250ml", prezzo: 12}, {ml: "500ml", prezzo: 18} ], immagine: 'immagini/10_respiro.png' },
+        { nome: "04 Tramonto", formati: [ {ml: "250ml", prezzo: 12}, {ml: "500ml", prezzo: 18} ], immagine: 'immagini/04_tramonto.png' }
     ];
 
     // Creazione della lista di essenze
@@ -57,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const formatoDiv = document.createElement('div');
             formatoDiv.classList.add('formato-item');
             formatoDiv.innerHTML = `
-                <p>${formato.ml} -                <p>${formato.ml} - €${formato.prezzo}</p>
+                <p>${formato.ml} - €${formato.prezzo}</p>
                 <input type="number" id="quantita-${essenzaIndex}-${formatoIndex}" min="0" placeholder="Quantità">
             `;
             rightDiv.appendChild(formatoDiv);
@@ -94,5 +74,4 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('totaleGlobale').textContent = `Totale Globale: €${totaleGlobale}`;
     });
 });
-
 
