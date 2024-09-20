@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestione Ordini Profumi</title>
+    <title>Ordini Personalizzati</title>
 
     <!-- Icona per il browser (favicon) -->
     <link rel="icon" href="immagini/mia_icona_192.png" type="image/png">
-
-    <!-- Icona per dispositivi Apple (iPhone, iPad) -->
     <link rel="apple-touch-icon" href="immagini/mia_icona_512.png" type="image/png">
 
     <!-- Collegamento al foglio di stile CSS -->
@@ -16,12 +14,12 @@
 </head>
 <body>
     <header>
-        <h1>Gestione Ordini</h1>
+        <h1>Ordini Personalizzati</h1>
         <p>Seleziona i profumi e calcola il totale per ogni ordine.</p>
     </header>
 
-    <!-- Sezione per inserire i dati del cliente -->
-    <div id="formCliente">
+    <!-- Sezione per inserire i dati del cliente (ridotta in altezza) -->
+    <div id="formCliente" class="small-form">
         <form id="customerForm">
             <label for="nome">Nome:</label>
             <input type="text" id="nome" name="nome" required>
@@ -40,9 +38,7 @@
     </div>
 
     <!-- Sezione per selezionare i profumi -->
-    <div id="app">
-        <!-- La lista delle essenze verrà caricata tramite JavaScript -->
-    </div>
+    <div id="app"></div>
 
     <!-- Totale dell'ordine -->
     <div>
@@ -52,5 +48,4 @@
     <script src="js/app.js"></script>
 </body>
 </html>
-
 
